@@ -9,10 +9,11 @@ import Text.Parsec
 import SloLog.Database
 import SloLog.Query
 import SloLog.Parser
+import SloLog.Pretty
 
 handle :: Database -> Either Query Clause -> IO Database
 handle db (Left query) = do
-    mapM print [instantiateQ sub query | sub <- qeval db query [Map.empty]]
+    mapM putStrLn [pprint $ instantiateQ sub query | sub <- qeval db query [Map.empty]]
     return db
 handle db (Right clause) = return $ db ++ [clause]
 
