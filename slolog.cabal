@@ -1,0 +1,12 @@
+Name: slolog
+Version: 0.0
+Description: A simple logic programming language
+License: LGPL
+Author: Riku Salminen
+Maintainer: riku.salminen@tkk.fi
+Build-Type: Simple
+Cabal-Version: >= 1.9
+
+Executable slolog
+    Main-is: Main.hs
+    Build-Depends: base >= 4, containers >= 0.3, parsec >= 3, pretty >= 1
