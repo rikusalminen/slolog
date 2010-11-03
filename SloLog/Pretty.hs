@@ -8,7 +8,7 @@ import Text.PrettyPrint
 
 pretty :: Structure -> Doc
 pretty (Atom ident) = text ident
-pretty (Variable ident) = text ("?" ++ ident)
+pretty (Variable ident) = text ('?' : ident)
 pretty (Compound children) = parens (hsep $ map pretty children)
 
 prettyQ :: Query -> Doc

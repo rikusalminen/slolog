@@ -14,27 +14,29 @@ parens = Token.parens lexer
 brackets = Token.brackets lexer
 reservedOp = Token.reservedOp lexer
 
-variable = char '?' >> identifier >>= (return . Variable)
-atom = identifier >>= (return . Atom)
-compound = parens (many1 structure) >>= (return . Compound)
-structure = variable <|> atom <|> compound
+variable = fmap Variable (char '?' >> identifier) <?> "Variable"
+atom = fmap Atom identifier <?> "Atom"
+compound = fmap Compound (parens $ many1 structure) <?> "Compound" 
+structure = variable <|> atom <|> compound <?> "Structure"
 
-operator_table = [
+operatorTable = [
     [Prefix (reservedOp "!" >> return Negation)],
     [Infix (reservedOp "&" >> return (\x y -> Conjunct [x, y])) AssocLeft],
     [Infix (reservedOp "|" >> return (\x y -> Disjunct [x, y])) AssocLeft]
     ]
 
-simplequery = brackets query <|> (structure >>= (return . Query))
-query = buildExpressionParser operator_table simplequery
+simplequery = brackets query <|> fmap Query structure <?> "Simple query"
+query = buildExpressionParser operatorTable simplequery <?> "Query"
 
 clause = do
     body <- structure
     conclusion <- option Pass (reservedOp "<-" >> query)
     return (body, conclusion)
+        <?> "Clause"
 
 statement = 
-    (reservedOp "?" >> query >>= (return . Left)) <|>
-    (clause >>= (return . Right))
+    fmap Left (reservedOp "?" >> query) <|>
+    fmap Right clause
+        <?> "Statement"
 
 

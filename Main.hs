@@ -13,7 +13,7 @@ import SloLog.Pretty
 
 handle :: Database -> Either Query Clause -> IO Database
 handle db (Left query) = do
-    mapM putStrLn [pprint $ instantiateQ sub query | sub <- qeval db query [Map.empty]]
+    mapM_ putStrLn [pprint $ instantiateQ sub query | sub <- qeval db query [Map.empty]]
     return db
 handle db (Right clause) = return $ db ++ [clause]
 
@@ -27,11 +27,9 @@ handleLine db line =
 
 repl db = do
     line <- getLine
-    if null line
-        then return ()
-        else do
-            db <- handleLine db line
-            repl db
+    unless (null line) $ do
+        db <- handleLine db line
+        repl db
 
 doFiles args = 
     foldM doFile [] args >>= repl
@@ -42,7 +40,7 @@ doFiles args =
             Left err -> do
                 print err
                 return db
-            Right stmts -> do
+            Right stmts ->
                 foldM handle db stmts
 
 

@@ -18,17 +18,16 @@ qeval db query frames =
 
 qeval' _ _ Pass frames = return frames
 qeval' counter db (Query struct) frames =
-    mapM applied frames >>= (return . concat)
+    fmap concat . mapM applied $ frames 
     where
-    applied frame = 
-        mapM (apply counter db frame struct) db >>= (return . concat)
-qeval' counter db (Disjunct children) frames = 
-    mapM (\child -> qeval' counter db child frames) children >>= (return . concat)
-qeval' counter db (Conjunct children) frames =
-    foldM (\frames' query -> qeval' counter db query frames') frames children  
+    applied frame = fmap concat . mapM (apply counter db frame struct) $ db 
+qeval' counter db (Disjunct disjuncts) frames = 
+    fmap concat . mapM (\child -> qeval' counter db child frames) $ disjuncts
+qeval' counter db (Conjunct conjuncts) frames =
+    foldM (flip $ qeval' counter db) frames conjuncts  
 qeval' counter db (Negation child) frames = do
     frames' <- mapM (\frame -> qeval' counter db child [frame]) frames
-    return $ [frame | (frame, []) <- zip frames frames']
+    return [frame | (frame, []) <- zip frames frames']
     
        
 apply counter db frame struct clause = do
