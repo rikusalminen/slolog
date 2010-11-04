@@ -1,0 +1,51 @@
+(title (Elizabeth II) (Queen of England))
+
+(title (Charles) (Prince of Wales))
+(parent (Charles) (Elizabeth II))
+
+(title (Prince William) (of Wales))
+(parent (Prince William) (Charles))
+
+(title (Prince Harry) (of Wales))
+(parent (Prince Harry) (Charles))
+
+(title (Anne) (Princess Royal))
+(parent (Anne) (Elizabeth II))
+
+(title (Peter Phillips) (Prince))
+(parent (Peter Phillips) (Anne))
+
+(title (Zara Phillips) (Princess))
+(parent (Zara Phillips) (Anne))
+
+(title (Andrew) (Duke of York))
+(parent (Andrew) (Elizabeth II))
+
+(title (Beatrice of York) (Princess))
+(parent (Beatrice of York) (Andrew))
+
+(title (Eugenie of York) (Princess))
+(parent (Eugenie of York) (Andrew))
+
+(title (Edward) (Earl of Wessex))
+(parent (Edward) (Elizabeth II))
+
+(title (Lady Louise) (Princess))
+(parent (Lady Louise) (Edward))
+
+(title (James) (Viscount Severn))
+(parent (James) (Edward))
+
+
+(siblings ?x ?y) <- 
+    (parent ?x ?parent) & (parent ?y ?parent)
+
+(grandparent ?x ?y) <-
+    (parent ?x ?z) & (parent ?z ?y)
+
+(cousins ?x ?y) <-
+    (grandparent ?x ?gp) & (grandparent ?y ?gp) & !(siblings ?x ?y)
+
+
+? (cousins (Prince William) ?x) & (title ?x ?title)
+

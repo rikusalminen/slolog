@@ -1,0 +1,28 @@
+(foo bar)
+(foo baz)
+(quux bar)
+
+(same ?x ?x)
+
+(friends ?x ?y) <- 
+    (?x bar) & (?y bar) & ! (same ?x ?y)
+
+? (?x bar) & (?x baz) 
+
+? (?x bar) | (?x baz)
+
+? (?x bar) & (?y baz) & !(same ?x ?y)
+
+
+(link a b)
+(link b c)
+(link c d)
+(link b e)
+
+(path ?x ?x)
+
+(path ?x ?y) <-
+    (link ?x ?intermed) & (path ?intermed ?y)
+
+? (path a ?x)
+

@@ -1,0 +1,10 @@
+(reverse' nil ?x ?x)
+(reverse' (cons ?head ?tail) ?accu ?rev) <- (reverse' ?tail (cons ?head ?accu) ?rev)
+(reverse ?x ?rev) <- (reverse' ?x nil ?rev)
+
+? (reverse (cons a (cons b (cons c nil))) ?rev)
+
+
+-- this goes into infinite loop, why? but so does prolog after giving 1 answer
+-- ? (reverse ?rev (cons a (cons b (cons c nil))))   
+
