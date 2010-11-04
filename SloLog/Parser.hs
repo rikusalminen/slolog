@@ -7,7 +7,7 @@ import Text.Parsec.Expr
 
 import SloLog.Database
 
-lexer = Token.makeTokenParser Language.haskellDef
+lexer = Token.makeTokenParser Language.haskellStyle
 
 identifier = Token.identifier lexer
 parens = Token.parens lexer
