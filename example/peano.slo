@@ -1,0 +1,29 @@
+(even zero)
+(odd (s ?x)) <- (even ?x)
+(even (s ?x)) <- (odd ?x)
+
+? (even zero)
+? (even (s zero))
+? (odd (s zero))
+? (even (s (s zero)))
+? (odd (s (s zero)))
+? (even (s (s (s zero))))
+? (odd (s (s (s zero))))
+
+(add zero ?x ?x)
+(add (s ?x) ?y ?sum) <- (add ?x (s ?y) ?sum)
+
+? (add (s (s (s zero))) (s (s zero)) ?sum)
+? (add (s zero) zero ?sum)
+
+(mul zero ?x zero)
+(mul (s ?x) ?y ?product) <- (mul ?x ?y ?p) & (add ?y ?p ?product)
+
+? (mul (s zero) zero ?prod)
+? (mul (s zero) (s (s zero)) ?prod)
+? (mul (s (s zero)) (s (s (s zero))) ?prod)
+
+
+
+
+
